@@ -1,38 +1,27 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function useCustomPointer(content) {
-  const [pos, setPos] = useState({ x: 0, y: 0 });
-  const pointerRef = useRef();
+export default function useCustomPointer() {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    const handleMove = (e) => {
-      setPos({ x: e.clientX, y: e.clientY });
+    const handleMouseMove = (event) => {
+      setPosition({ x: event.clientX, y: event.clientY });
     };
-    window.addEventListener("mousemove", handleMove);
-
-    document.body.style.cursor = "none";
-
-    return () => {
-      window.removeEventListener("mousemove", handleMove);
-      document.body.style.cursor = "";
-    };
+    document.addEventListener("mousemove", handleMouseMove);
+    return () => document.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   return (
     <div
-      ref={pointerRef}
       style={{
         position: "fixed",
-        left: pos.x,
-        top: pos.y,
-        pointerEvents: "none",
+        left: position.x,
+        top: position.y,
+        cursor: "none",
         transform: "translate(-50%, -50%)",
-        zIndex: 9999,
-        fontSize: "2rem",
-        userSelect: "none",
       }}
     >
-      {content}
+      {component}
     </div>
   );
 }
