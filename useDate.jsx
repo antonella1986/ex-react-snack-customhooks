@@ -1,22 +1,15 @@
 import { useState, useEffect } from "react";
 
 export default function useDate() {
-  const getCurrentDate = () => {
-    const now = new Date();
-    return {
-      date: now.toLocaleDateString(),
-      time: now.toLocaleTimeString(),
-    };
-  };
-
-  const [current, setCurrent] = useState(getCurrentDate());
+  const [currentDate, setCurrentDate] = useState(new Date());
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent(getCurrentDate());
+      setCurrentDate(new Date());
     }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+    return () => {
+        clearInterval(interval);
+    }, []});
 
-  return current;
+  return currentDate;
 }
